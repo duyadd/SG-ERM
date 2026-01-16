@@ -22,6 +22,7 @@ import { ExternalData } from './components/pages/data-management/ExternalData';
 
 import { UserAccessManagement } from './components/pages/settings/UserAccessManagement';
 import { FrameworkAdjustment } from './components/pages/settings/FrameworkAdjustment';
+import { MasterData } from './components/pages/settings/MasterData';
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('Super User');
@@ -102,6 +103,9 @@ export default function App() {
 
       case PAGE_PATHS.FRAMEWORK_ADJUSTMENT:
         return <FrameworkAdjustment currentRole={currentRole} />;
+
+      case PAGE_PATHS.MASTER_DATA:
+        return <MasterData currentRole={currentRole} />;
 
       default:
         return <Main />;

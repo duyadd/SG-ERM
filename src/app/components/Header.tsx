@@ -246,7 +246,10 @@ export function Header({
 
             {openDropdown === 'settings' && (
               <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded shadow-lg min-w-[200px] z-50">
-                <button className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-700">
+                <button
+                  className={getMenuItemClass(currentPage === PAGE_PATHS.MASTER_DATA)}
+                  onClick={() => handleNavigate(PAGE_PATHS.MASTER_DATA)}
+                >
                   Master Data
                 </button>
                 <button

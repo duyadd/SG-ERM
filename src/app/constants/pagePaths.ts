@@ -24,6 +24,7 @@ export const PAGE_PATHS = {
   // Settings
   USER_ACCESS_MANAGEMENT: 'user-access-management' as const,
   FRAMEWORK_ADJUSTMENT: 'framework-adjustment' as const,
+  MASTER_DATA: 'master-data' as const,
 } as const;
 
 export type PagePath = typeof PAGE_PATHS[keyof typeof PAGE_PATHS];
@@ -46,6 +47,7 @@ export const ALL_PAGE_PATHS: PagePath[] = [
   PAGE_PATHS.EXTERNAL_DATA,
   PAGE_PATHS.USER_ACCESS_MANAGEMENT,
   PAGE_PATHS.FRAMEWORK_ADJUSTMENT,
+  PAGE_PATHS.MASTER_DATA,
 ];
 
 // Page groups for navigation
@@ -72,5 +74,6 @@ export const PAGE_GROUPS = {
   SETTINGS: [
     PAGE_PATHS.USER_ACCESS_MANAGEMENT,
     PAGE_PATHS.FRAMEWORK_ADJUSTMENT,
+    PAGE_PATHS.MASTER_DATA,
   ],
 } as const;

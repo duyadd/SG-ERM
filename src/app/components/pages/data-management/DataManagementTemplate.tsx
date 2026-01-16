@@ -3,16 +3,19 @@ import { Upload } from 'lucide-react';
 import { type UserRole } from '../../Header';
 import React from 'react';
 
-interface DataRow {
-  name: string;
-  role: string;
-  lastUploadedDate: string;
-  missingData: string;
+export interface ColumnDefinition {
+  key: string;
+  label: string;
+}
+
+export interface DataRow {
+  [key: string]: string | number | undefined;
 }
 
 interface DataManagementTemplateProps {
   title: string;
   pageTitle: string;
+  columns: ColumnDefinition[];
   dataRows: DataRow[];
   currentRole: UserRole;
 }
@@ -20,6 +23,7 @@ interface DataManagementTemplateProps {
 export function DataManagementTemplate({
   title,
   pageTitle,
+  columns,
   dataRows,
   currentRole,
 }: DataManagementTemplateProps) {
@@ -44,7 +48,7 @@ export function DataManagementTemplate({
   return (
     <div className="flex-1 p-8 bg-gray-50">
       {/* Page Title */}
-      <h1 className="text-2xl font-bold mb-2">{title}</h1>
+      <h1 className="text-2xl font-bold mb-6">{title}</h1>
 
       {/* Controls */}
       <div className="flex gap-4 mb-6">
@@ -79,19 +83,21 @@ export function DataManagementTemplate({
         <table className="w-full">
           <thead>
             <tr className="bg-orange-500 text-white">
-              <th className="px-6 py-4 text-left font-semibold">Executive</th>
-              <th className="px-6 py-4 text-left font-semibold">Role</th>
-              <th className="px-6 py-4 text-left font-semibold">Last Uploaded Date</th>
-              <th className="px-6 py-4 text-left font-semibold">Missing Data</th>
+              {columns.map((column) => (
+                <th key={column.key} className="px-6 py-4 text-left font-semibold">
+                  {column.label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {dataRows.map((row, index) => (
               <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
-                <td className="px-6 py-4 text-gray-900">{row.name}</td>
-                <td className="px-6 py-4 text-gray-900">{row.role}</td>
-                <td className="px-6 py-4 text-gray-600">{row.lastUploadedDate || '-'}</td>
-                <td className="px-6 py-4 text-gray-600">{row.missingData || '-'}</td>
+                {columns.map((column) => (
+                  <td key={column.key} className="px-6 py-4 text-gray-900">
+                    {row[column.key] || '-'}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -126,6 +132,11 @@ export function DataManagementTemplate({
         >
           Upload
         </button>
+      </div>
+
+      {/* Breadcrumb */}
+      <div className="mt-8 text-sm text-gray-400">
+        Data Management → {pageTitle}
       </div>
     </div>
   );

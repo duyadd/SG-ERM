@@ -1,26 +1,225 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { type UserRole } from '../../Header';
-import { DataManagementTemplate } from './DataManagementTemplate';
+import { DataManagementTemplate, type ColumnDefinition, type DataRow } from './DataManagementTemplate';
+import { Upload } from 'lucide-react';
 
 interface FinanceDataProps {
   currentRole: UserRole;
 }
 
 export function FinanceData({ currentRole }: FinanceDataProps) {
-  const financeDataRows = [
-    { name: 'Finance Team A', role: 'Accounting Manager', lastUploadedDate: '', missingData: '' },
-    { name: 'Finance Team B', role: 'Treasury Manager', lastUploadedDate: '', missingData: '' },
-    { name: 'Finance Team C', role: 'Audit Manager', lastUploadedDate: '', missingData: '' },
-    { name: 'Finance Team D', role: 'Cost Analysis Manager', lastUploadedDate: '', missingData: '' },
-    { name: 'Finance Team E', role: 'Financial Planning Manager', lastUploadedDate: '', missingData: '' },
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [company, setCompany] = useState('Company A');
+  const [year, setYear] = useState('2025');
+  const [entityFilter, setEntityFilter] = useState('all');
+
+  const columns: ColumnDefinition[] = [
+    { key: 'entity', label: 'Entity' },
+    { key: 'netProfit', label: 'Net Profit' },
+    { key: 'ebit', label: 'EBIT' },
+    { key: 'ebitda', label: 'EBITDA' },
+    { key: 'asset', label: 'Asset' },
+    { key: 'equity', label: 'Equity' },
+    { key: 'revenue', label: 'Revenue' },
+    { key: 'debt', label: 'Debt' },
+    { key: 'investment', label: 'Investment' },
   ];
 
+  const allFinanceDataRows: DataRow[] = [
+    {
+      entity: 'Finance Team A',
+      netProfit: '$50M',
+      ebit: '$75M',
+      ebitda: '$85M',
+      asset: '$500M',
+      equity: '$250M',
+      revenue: '$200M',
+      debt: '$150M',
+      investment: '$30M',
+    },
+    {
+      entity: 'Finance Team B',
+      netProfit: '$35M',
+      ebit: '$55M',
+      ebitda: '$65M',
+      asset: '$350M',
+      equity: '$180M',
+      revenue: '$150M',
+      debt: '$100M',
+      investment: '$20M',
+    },
+    {
+      entity: 'Finance Team C',
+      netProfit: '$42M',
+      ebit: '$65M',
+      ebitda: '$75M',
+      asset: '$420M',
+      equity: '$210M',
+      revenue: '$180M',
+      debt: '$120M',
+      investment: '$25M',
+    },
+    {
+      entity: 'Finance Team D',
+      netProfit: '$28M',
+      ebit: '$45M',
+      ebitda: '$52M',
+      asset: '$280M',
+      equity: '$140M',
+      revenue: '$120M',
+      debt: '$80M',
+      investment: '$15M',
+    },
+    {
+      entity: 'Finance Team E',
+      netProfit: '$55M',
+      ebit: '$85M',
+      ebitda: '$95M',
+      asset: '$550M',
+      equity: '$275M',
+      revenue: '$220M',
+      debt: '$160M',
+      investment: '$35M',
+    },
+  ];
+
+  const filteredData = entityFilter === 'all' 
+    ? allFinanceDataRows 
+    : allFinanceDataRows.filter((row) => row.entity === entityFilter);
+
+  const entities = ['all', ...new Set(allFinanceDataRows.map((row) => row.entity as string))];
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUpload = () => {
+    if (selectedFile) {
+      console.log('Uploading file:', selectedFile.name);
+      setSelectedFile(null);
+    }
+  };
+
   return (
-    <DataManagementTemplate
-      title="Finance Data"
-      pageTitle="Finance Data"
-      dataRows={financeDataRows}
-      currentRole={currentRole}
-    />
+    <div className="flex-1 p-8 bg-gray-50">
+      {/* Page Title */}
+      <h1 className="text-2xl font-bold mb-6">Finance Data</h1>
+
+      {/* Controls */}
+      <div className="flex gap-4 mb-6">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
+          <select
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
+          >
+            <option>Company A</option>
+            <option>Company B</option>
+            <option>Company C</option>
+          </select>
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+          <select
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
+          >
+            <option>2023</option>
+            <option>2024</option>
+            <option>2025</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Filter Controls */}
+      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
+        <h2 className="text-lg font-semibold mb-4">Filter Finance Data</h2>
+        <div className="flex gap-6">
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Entity</label>
+            <select
+              value={entityFilter}
+              onChange={(e) => setEntityFilter(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
+            >
+              {entities.map((entity) => (
+                <option key={entity} value={entity}>
+                  {entity === 'all' ? 'All Entities' : entity}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="mt-4 text-sm text-gray-600">
+          Showing {filteredData.length} of {allFinanceDataRows.length} finance teams
+        </div>
+      </div>
+
+      {/* Data Table */}
+      <div className="bg-white rounded border border-gray-200 overflow-hidden mb-6">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-orange-500 text-white">
+              {columns.map((column) => (
+                <th key={column.key} className="px-6 py-4 text-left font-semibold">
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((row, index) => (
+              <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
+                {columns.map((column) => (
+                  <td key={column.key} className="px-6 py-4 text-gray-900">
+                    {row[column.key] || '-'}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* File Upload Section */}
+      <div className="flex gap-4 items-end">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Upload File</label>
+          <div className="flex items-center">
+            <input
+              type="file"
+              id="file-input"
+              onChange={handleFileSelect}
+              className="hidden"
+              accept=".xlsx,.xls,.csv,.pdf"
+            />
+            <label
+              htmlFor="file-input"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded text-gray-700 cursor-pointer hover:bg-gray-50"
+            >
+              <Upload className="w-4 h-4" />
+              {selectedFile ? selectedFile.name : 'Attach File Here...'}
+            </label>
+          </div>
+        </div>
+        <button
+          onClick={handleUpload}
+          disabled={!selectedFile}
+          className="px-6 py-2 bg-orange-500 text-white rounded font-medium hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Upload
+        </button>
+      </div>
+
+      {/* Breadcrumb */}
+      <div className="mt-8 text-sm text-gray-400">
+        Data Management → Finance Data
+      </div>
+    </div>
   );
 }
