@@ -11,8 +11,6 @@ export function SubsidiaryData({ currentRole }: SubsidiaryDataProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [company, setCompany] = useState('Company A');
   const [year, setYear] = useState('2025');
-  const [industryFilter, setIndustryFilter] = useState('all');
-  const [strategicImportanceFilter, setStrategicImportanceFilter] = useState('all');
 
   const columns: ColumnDefinition[] = [
     { key: 'subsidiaryName', label: 'Subsidiary Name' },
@@ -78,17 +76,6 @@ export function SubsidiaryData({ currentRole }: SubsidiaryDataProps) {
     },
   ];
 
-  // Filter data based on selected filters
-  const filteredData = allSubsidiaryDataRows.filter((row) => {
-    const industryMatch = industryFilter === 'all' || row.industry === industryFilter;
-    const importanceMatch = strategicImportanceFilter === 'all' || row.strategicImportance === strategicImportanceFilter;
-    return industryMatch && importanceMatch;
-  });
-
-  // Get unique industries and strategic importance values
-  const industries = ['all', ...new Set(allSubsidiaryDataRows.map((row) => row.industry as string))];
-  const strategicImportances = ['all', ...new Set(allSubsidiaryDataRows.map((row) => row.strategicImportance as string))];
-
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -136,44 +123,6 @@ export function SubsidiaryData({ currentRole }: SubsidiaryDataProps) {
         </div>
       </div>
 
-      {/* Filter Controls */}
-      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Filter Subsidiary Data</h2>
-        <div className="flex gap-6">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-            <select
-              value={industryFilter}
-              onChange={(e) => setIndustryFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
-            >
-              {industries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry === 'all' ? 'All Industries' : industry}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Strategic Importance</label>
-            <select
-              value={strategicImportanceFilter}
-              onChange={(e) => setStrategicImportanceFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
-            >
-              {strategicImportances.map((importance) => (
-                <option key={importance} value={importance}>
-                  {importance === 'all' ? 'All Importance Levels' : importance}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          Showing {filteredData.length} of {allSubsidiaryDataRows.length} subsidiaries
-        </div>
-      </div>
-
       {/* Data Table */}
       <div className="bg-white rounded border border-gray-200 overflow-hidden mb-6">
         <table className="w-full">
@@ -187,7 +136,7 @@ export function SubsidiaryData({ currentRole }: SubsidiaryDataProps) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, index) => (
+            {allSubsidiaryDataRows.map((row, index) => (
               <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
                 {columns.map((column) => (
                   <td key={column.key} className="px-6 py-4 text-gray-900">

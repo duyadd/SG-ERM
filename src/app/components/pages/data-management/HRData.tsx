@@ -10,178 +10,154 @@ export function HRData({ currentRole }: HRDataProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [company, setCompany] = useState('Company A');
   const [year, setYear] = useState('2025');
-  const [dataType, setDataType] = useState('currentPay'); // currentPay, historicalPay, bscAchievements
 
-  // Current Pay columns
-  const currentPayColumns: ColumnDefinition[] = [
+  // Combined Pay + BSC columns
+  const payBscColumns: ColumnDefinition[] = [
     { key: 'executive', label: 'Executive' },
     { key: 'position', label: 'Position' },
-    { key: 'pay', label: 'Base Pay' },
-    { key: 'variable', label: 'Variable Pay' },
-    { key: 'benefits', label: 'Benefits' },
-    { key: 'totalCompensation', label: 'Total Compensation' },
-  ];
-
-  // Historical Pay columns
-  const historicalPayColumns: ColumnDefinition[] = [
-    { key: 'executive', label: 'Executive' },
-    { key: 'position', label: 'Position' },
-    { key: 'year', label: 'Year' },
     { key: 'basePay', label: 'Base Pay' },
     { key: 'variablePay', label: 'Variable Pay' },
     { key: 'totalCompensation', label: 'Total Compensation' },
-    { key: 'percentChange', label: '% Change' },
-  ];
-
-  // BSC Achievements columns
-  const bscColumns: ColumnDefinition[] = [
-    { key: 'executive', label: 'Executive' },
-    { key: 'position', label: 'Position' },
-    { key: 'kpiObjective', label: 'KPI Objective' },
-    { key: 'target', label: 'Target' },
-    { key: 'actual', label: 'Actual' },
     { key: 'achievement', label: 'Achievement %' },
-    { key: 'status', label: 'Status' },
   ];
 
-  const currentPayData: DataRow[] = [
+  const combinedData: DataRow[] = [
     {
       executive: 'Executive A',
       position: 'CEO',
-      pay: '$500,000',
-      variable: '$200,000',
-      benefits: '$50,000',
+      basePay: '$500,000',
+      variablePay: '$200,000',
       totalCompensation: '$750,000',
+      kpiObjective: 'Revenue Growth',
+      achievement: '105%',
+    },
+    {
+      executive: 'Executive A',
+      position: 'CEO',
+      basePay: '$500,000',
+      variablePay: '$200,000',
+      totalCompensation: '$750,000',
+      kpiObjective: 'Cost Reduction',
+      achievement: '120%',
     },
     {
       executive: 'Executive B',
       position: 'CFO',
-      pay: '$400,000',
-      variable: '$150,000',
-      benefits: '$40,000',
+      basePay: '$400,000',
+      variablePay: '$150,000',
       totalCompensation: '$590,000',
+      kpiObjective: 'Financial Accuracy',
+      achievement: '100%',
     },
     {
       executive: 'Executive C',
       position: 'CMO',
-      pay: '$350,000',
-      variable: '$100,000',
-      benefits: '$35,000',
+      basePay: '$350,000',
+      variablePay: '$100,000',
       totalCompensation: '$485,000',
+      kpiObjective: 'Brand Awareness',
+      achievement: '108%',
     },
     {
       executive: 'Executive D',
       position: 'COO',
-      pay: '$380,000',
-      variable: '$120,000',
-      benefits: '$38,000',
+      basePay: '$380,000',
+      variablePay: '$120,000',
       totalCompensation: '$538,000',
+      kpiObjective: 'Operational Efficiency',
+      achievement: '98%',
     },
     {
       executive: 'Executive E',
       position: 'CTO',
-      pay: '$420,000',
-      variable: '$130,000',
-      benefits: '$42,000',
+      basePay: '$420,000',
+      variablePay: '$130,000',
       totalCompensation: '$592,000',
+      kpiObjective: 'Technology Innovation',
+      achievement: '112%',
     },
   ];
 
-  const historicalPayData: DataRow[] = [
-    {
-      executive: 'Executive A',
-      position: 'CEO',
-      year: '2023',
-      basePay: '$480,000',
-      variablePay: '$180,000',
-      totalCompensation: '$660,000',
-      percentChange: '+13.6%',
-    },
-    {
-      executive: 'Executive A',
-      position: 'CEO',
-      year: '2024',
-      basePay: '$500,000',
-      variablePay: '$200,000',
-      totalCompensation: '$700,000',
-      percentChange: '+6.1%',
-    },
-    {
-      executive: 'Executive B',
-      position: 'CFO',
-      year: '2023',
-      basePay: '$380,000',
-      variablePay: '$140,000',
-      totalCompensation: '$520,000',
-      percentChange: '+13.5%',
-    },
-    {
-      executive: 'Executive B',
-      position: 'CFO',
-      year: '2024',
-      basePay: '$400,000',
-      variablePay: '$150,000',
-      totalCompensation: '$550,000',
-      percentChange: '+7.3%',
-    },
-    {
-      executive: 'Executive C',
-      position: 'CMO',
-      year: '2023',
-      basePay: '$330,000',
-      variablePay: '$90,000',
-      totalCompensation: '$420,000',
-      percentChange: '+15.5%',
-    },
-  ];
-
-  const bscAchievementsData: DataRow[] = [
-    {
-      executive: 'Executive A',
-      position: 'CEO',
-      kpiObjective: 'Revenue Growth',
-      target: '$100M',
-      actual: '$105M',
-      achievement: '105%',
-      status: 'Exceeded',
-    },
-    {
-      executive: 'Executive A',
-      position: 'CEO',
-      kpiObjective: 'Cost Reduction',
-      target: '5%',
-      actual: '6%',
-      achievement: '120%',
-      status: 'Exceeded',
-    },
-    {
-      executive: 'Executive B',
-      position: 'CFO',
-      kpiObjective: 'Financial Accuracy',
-      target: '99.5%',
-      actual: '99.8%',
-      achievement: '100%',
-      status: 'Met',
-    },
-    {
-      executive: 'Executive C',
-      position: 'CMO',
-      kpiObjective: 'Brand Awareness',
-      target: '60%',
-      actual: '65%',
-      achievement: '108%',
-      status: 'Exceeded',
-    },
-    {
-      executive: 'Executive D',
-      position: 'COO',
-      kpiObjective: 'Operational Efficiency',
-      target: '92%',
-      actual: '90%',
-      achievement: '98%',
-      status: 'Met',
-    },
-  ];
+  // Historical Pay data with year filter
+  const historicalPayByYear: { [key: string]: DataRow[] } = {
+    '2023': [
+      {
+        executive: 'Executive A',
+        position: 'CEO',
+        basePay: '$480,000',
+        variablePay: '$180,000',
+        totalCompensation: '$660,000',
+        kpiObjective: 'Revenue Growth',
+        achievement: '98%',
+      },
+      {
+        executive: 'Executive A',
+        position: 'CEO',
+        basePay: '$480,000',
+        variablePay: '$180,000',
+        totalCompensation: '$660,000',
+        kpiObjective: 'Cost Reduction',
+        achievement: '115%',
+      },
+      {
+        executive: 'Executive B',
+        position: 'CFO',
+        basePay: '$380,000',
+        variablePay: '$140,000',
+        totalCompensation: '$520,000',
+        kpiObjective: 'Financial Accuracy',
+        achievement: '95%',
+      },
+      {
+        executive: 'Executive C',
+        position: 'CMO',
+        basePay: '$330,000',
+        variablePay: '$90,000',
+        totalCompensation: '$420,000',
+        kpiObjective: 'Brand Awareness',
+        achievement: '102%',
+      },
+    ],
+    '2024': [
+      {
+        executive: 'Executive A',
+        position: 'CEO',
+        basePay: '$500,000',
+        variablePay: '$200,000',
+        totalCompensation: '$700,000',
+        kpiObjective: 'Revenue Growth',
+        achievement: '103%',
+      },
+      {
+        executive: 'Executive A',
+        position: 'CEO',
+        basePay: '$500,000',
+        variablePay: '$200,000',
+        totalCompensation: '$700,000',
+        kpiObjective: 'Cost Reduction',
+        achievement: '118%',
+      },
+      {
+        executive: 'Executive B',
+        position: 'CFO',
+        basePay: '$400,000',
+        variablePay: '$150,000',
+        totalCompensation: '$550,000',
+        kpiObjective: 'Financial Accuracy',
+        achievement: '99%',
+      },
+      {
+        executive: 'Executive C',
+        position: 'CMO',
+        basePay: '$350,000',
+        variablePay: '$100,000',
+        totalCompensation: '$450,000',
+        kpiObjective: 'Brand Awareness',
+        achievement: '106%',
+      },
+    ],
+    '2025': combinedData,
+  };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -224,6 +200,10 @@ export function HRData({ currentRole }: HRDataProps) {
     </div>
   );
 
+  const getDisplayData = () => {
+    return historicalPayByYear[year] || combinedData;
+  };
+
   return (
     <div className="flex-1 p-8 bg-gray-50">
       {/* Page Title */}
@@ -257,67 +237,9 @@ export function HRData({ currentRole }: HRDataProps) {
         </div>
       </div>
 
-      {/* Data Type Filter */}
-      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Data Type</h2>
-        <div className="flex gap-6">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="dataType"
-              value="currentPay"
-              checked={dataType === 'currentPay'}
-              onChange={(e) => setDataType(e.target.value)}
-              className="w-4 h-4"
-            />
-            <span className="text-gray-700">Current Pay</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="dataType"
-              value="historicalPay"
-              checked={dataType === 'historicalPay'}
-              onChange={(e) => setDataType(e.target.value)}
-              className="w-4 h-4"
-            />
-            <span className="text-gray-700">Historical Pay Data</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="dataType"
-              value="bscAchievements"
-              checked={dataType === 'bscAchievements'}
-              onChange={(e) => setDataType(e.target.value)}
-              className="w-4 h-4"
-            />
-            <span className="text-gray-700">BSC Achievements</span>
-          </label>
-        </div>
-      </div>
-
-      {/* Data Tables */}
-      {dataType === 'currentPay' && (
-        <>
-          <h3 className="text-lg font-semibold mb-4">Current Pay Information</h3>
-          {renderTable(currentPayColumns, currentPayData)}
-        </>
-      )}
-
-      {dataType === 'historicalPay' && (
-        <>
-          <h3 className="text-lg font-semibold mb-4">Historical Pay Data</h3>
-          {renderTable(historicalPayColumns, historicalPayData)}
-        </>
-      )}
-
-      {dataType === 'bscAchievements' && (
-        <>
-          <h3 className="text-lg font-semibold mb-4">BSC (Balanced Scorecard) Achievements</h3>
-          {renderTable(bscColumns, bscAchievementsData)}
-        </>
-      )}
+      {/* Pay Information + BSC Achievements */}
+      <h3 className="text-lg font-semibold mb-4">Pay Information & BSC Achievements</h3>
+      {renderTable(payBscColumns, getDisplayData())}
 
       {/* File Upload Section */}
       <div className="flex gap-4 items-end">

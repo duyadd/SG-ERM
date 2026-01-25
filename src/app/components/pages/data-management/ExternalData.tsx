@@ -11,7 +11,6 @@ export function ExternalData({ currentRole }: ExternalDataProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [company, setCompany] = useState('Company A');
   const [year, setYear] = useState('2025');
-  const [industryFilter, setIndustryFilter] = useState('all');
 
   const columns: ColumnDefinition[] = [
     { key: 'industry', label: 'Industry' },
@@ -58,12 +57,6 @@ export function ExternalData({ currentRole }: ExternalDataProps) {
       lastUpdated: 'Jan 08, 2025',
     },
   ];
-
-  const filteredData = industryFilter === 'all' 
-    ? allExternalDataRows 
-    : allExternalDataRows.filter((row) => row.industry === industryFilter);
-
-  const industries = ['all', ...new Set(allExternalDataRows.map((row) => row.industry as string))];
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -112,30 +105,6 @@ export function ExternalData({ currentRole }: ExternalDataProps) {
         </div>
       </div>
 
-      {/* Filter Controls */}
-      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Filter External Data</h2>
-        <div className="flex gap-6">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-            <select
-              value={industryFilter}
-              onChange={(e) => setIndustryFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
-            >
-              {industries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry === 'all' ? 'All Industries' : industry}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          Showing {filteredData.length} of {allExternalDataRows.length} industries
-        </div>
-      </div>
-
       {/* Data Table */}
       <div className="bg-white rounded border border-gray-200 overflow-hidden mb-6">
         <table className="w-full">
@@ -149,7 +118,7 @@ export function ExternalData({ currentRole }: ExternalDataProps) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, index) => (
+            {allExternalDataRows.map((row, index) => (
               <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
                 {columns.map((column) => (
                   <td key={column.key} className="px-6 py-4 text-gray-900">

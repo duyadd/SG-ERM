@@ -11,10 +11,9 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [company, setCompany] = useState('Company A');
   const [year, setYear] = useState('2025');
-  const [entityFilter, setEntityFilter] = useState('all');
 
   const columns: ColumnDefinition[] = [
-    { key: 'entity', label: 'Entity' },
+    { key: 'company', label: 'Company' },
     { key: 'netProfit', label: 'Net Profit' },
     { key: 'ebit', label: 'EBIT' },
     { key: 'ebitda', label: 'EBITDA' },
@@ -27,7 +26,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
 
   const allFinanceDataRows: DataRow[] = [
     {
-      entity: 'Finance Team A',
+      company: 'Company A',
       netProfit: '$50M',
       ebit: '$75M',
       ebitda: '$85M',
@@ -38,7 +37,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
       investment: '$30M',
     },
     {
-      entity: 'Finance Team B',
+      company: 'Company B',
       netProfit: '$35M',
       ebit: '$55M',
       ebitda: '$65M',
@@ -49,7 +48,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
       investment: '$20M',
     },
     {
-      entity: 'Finance Team C',
+      company: 'Company A',
       netProfit: '$42M',
       ebit: '$65M',
       ebitda: '$75M',
@@ -60,7 +59,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
       investment: '$25M',
     },
     {
-      entity: 'Finance Team D',
+      company: 'Company B',
       netProfit: '$28M',
       ebit: '$45M',
       ebitda: '$52M',
@@ -71,7 +70,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
       investment: '$15M',
     },
     {
-      entity: 'Finance Team E',
+      company: 'Company A',
       netProfit: '$55M',
       ebit: '$85M',
       ebitda: '$95M',
@@ -82,12 +81,6 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
       investment: '$35M',
     },
   ];
-
-  const filteredData = entityFilter === 'all' 
-    ? allFinanceDataRows 
-    : allFinanceDataRows.filter((row) => row.entity === entityFilter);
-
-  const entities = ['all', ...new Set(allFinanceDataRows.map((row) => row.entity as string))];
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -136,30 +129,6 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
         </div>
       </div>
 
-      {/* Filter Controls */}
-      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Filter Finance Data</h2>
-        <div className="flex gap-6">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Entity</label>
-            <select
-              value={entityFilter}
-              onChange={(e) => setEntityFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
-            >
-              {entities.map((entity) => (
-                <option key={entity} value={entity}>
-                  {entity === 'all' ? 'All Entities' : entity}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          Showing {filteredData.length} of {allFinanceDataRows.length} finance teams
-        </div>
-      </div>
-
       {/* Data Table */}
       <div className="bg-white rounded border border-gray-200 overflow-hidden mb-6">
         <table className="w-full">
@@ -173,7 +142,7 @@ export function FinanceData({ currentRole }: FinanceDataProps) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, index) => (
+            {allFinanceDataRows.map((row, index) => (
               <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
                 {columns.map((column) => (
                   <td key={column.key} className="px-6 py-4 text-gray-900">

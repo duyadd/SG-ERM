@@ -11,10 +11,9 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [company, setCompany] = useState('Company A');
   const [year, setYear] = useState('2025');
-  const [departmentFilter, setDepartmentFilter] = useState('all');
 
   const columns: ColumnDefinition[] = [
-    { key: 'department', label: 'Department' },
+    { key: 'company', label: 'Company' },
     { key: 'netProfit', label: 'Net Profit' },
     { key: 'ebit', label: 'EBIT' },
     { key: 'ebitda', label: 'EBITDA' },
@@ -25,7 +24,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
 
   const allBusinessPlanRows: DataRow[] = [
     {
-      department: 'Department A',
+      company: 'Company A',
       netProfit: '$40M',
       ebit: '$60M',
       ebitda: '$70M',
@@ -34,7 +33,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
       debt: '$120M',
     },
     {
-      department: 'Department B',
+      company: 'Company B',
       netProfit: '$32M',
       ebit: '$50M',
       ebitda: '$58M',
@@ -43,7 +42,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
       debt: '$90M',
     },
     {
-      department: 'Department C',
+      company: 'Company A',
       netProfit: '$45M',
       ebit: '$70M',
       ebitda: '$80M',
@@ -52,7 +51,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
       debt: '$140M',
     },
     {
-      department: 'Department D',
+      company: 'Company B',
       netProfit: '$28M',
       ebit: '$42M',
       ebitda: '$50M',
@@ -61,7 +60,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
       debt: '$70M',
     },
     {
-      department: 'Department E',
+      company: 'Company A',
       netProfit: '$38M',
       ebit: '$58M',
       ebitda: '$68M',
@@ -70,12 +69,6 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
       debt: '$110M',
     },
   ];
-
-  const filteredData = departmentFilter === 'all' 
-    ? allBusinessPlanRows 
-    : allBusinessPlanRows.filter((row) => row.department === departmentFilter);
-
-  const departments = ['all', ...new Set(allBusinessPlanRows.map((row) => row.department as string))];
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -124,30 +117,6 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
         </div>
       </div>
 
-      {/* Filter Controls */}
-      <div className="bg-white rounded border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Filter Business Plan</h2>
-        <div className="flex gap-6">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
-            <select
-              value={departmentFilter}
-              onChange={(e) => setDepartmentFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 cursor-pointer"
-            >
-              {departments.map((department) => (
-                <option key={department} value={department}>
-                  {department === 'all' ? 'All Departments' : department}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          Showing {filteredData.length} of {allBusinessPlanRows.length} departments
-        </div>
-      </div>
-
       {/* Data Table */}
       <div className="bg-white rounded border border-gray-200 overflow-hidden mb-6">
         <table className="w-full">
@@ -161,7 +130,7 @@ export function BusinessPlan({ currentRole }: BusinessPlanProps) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, index) => (
+            {allBusinessPlanRows.map((row, index) => (
               <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
                 {columns.map((column) => (
                   <td key={column.key} className="px-6 py-4 text-gray-900">
